@@ -1,5 +1,6 @@
 package com.nonce.restsecurity.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
  * <p>
  * 登录认证
  */
+@Slf4j
 @Component
 public class SelfAuthenticationProvider implements AuthenticationProvider {
 
@@ -31,10 +33,16 @@ public class SelfAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails userInfo = selfUserDetailsService.loadUserByUsername(username);
 
+        log.info("input password: {}", password);
+        log.info("userInfo: {}", userInfo.toString());
+
         boolean matches = new BCryptPasswordEncoder().matches(password, userInfo.getPassword());
+        //boolean matches = password.equals(userInfo.getPassword());
+        log.info("match password: {}", matches);
         if (!matches) {
             throw new BadCredentialsException("The password is incorrect!!");
         }
+
         return new UsernamePasswordAuthenticationToken(username, userInfo.getPassword(), userInfo.getAuthorities());
     }
 

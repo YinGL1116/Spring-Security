@@ -4,6 +4,7 @@ import com.nonce.restsecurity.config.UrlResponse;
 import com.nonce.restsecurity.dao.AuthorityUserRepository;
 import com.nonce.restsecurity.util.SecurityResponse;
 import com.nonce.restsecurity.util.TimeUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @date 2019/3/20
  */
 @SuppressWarnings("Duplicates")
+@Slf4j
 @Service
 @Transactional
 public class UserService {
@@ -76,6 +78,7 @@ public class UserService {
             });
         } else {
             List<Map<String, Object>> rootMenuInfoByUsername = authorityUserRepository.findRootMenuInfoByUsername(username);
+            log.info("rootMenuInfoByUsername is empty? {}", ObjectUtils.isEmpty(rootMenuInfoByUsername));
             if (!ObjectUtils.isEmpty(rootMenuInfoByUsername)) {
                 rootMenuInfoByUsername.forEach(rootMenuInfo -> {
                     int id = (int) rootMenuInfo.get("id");

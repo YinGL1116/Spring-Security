@@ -1,6 +1,7 @@
 package com.nonce.restsecurity.config;
 
 import com.nonce.restsecurity.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +20,7 @@ import java.util.Set;
  *
  * 自定义用户认证
  */
+@Slf4j
 @Component
 public class SelfUserDetailsService implements UserDetailsService {
 
@@ -43,6 +45,7 @@ public class SelfUserDetailsService implements UserDetailsService {
             SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(roleName); //用户拥有的角色
             authoritiesSet.add(simpleGrantedAuthority);
         }
+        log.info("authorities : {}", authoritiesSet);
         userInfo.setAuthorities(authoritiesSet);
 
         return userInfo;

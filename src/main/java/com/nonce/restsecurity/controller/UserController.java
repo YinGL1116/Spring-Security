@@ -32,7 +32,7 @@ public class UserController {
      */
     @PostMapping(value = "/user-manage/add")
     public SecurityResponse add(String nickname, String username, String password, String email, String phone, String validTime, String remark) {
-        if (!ObjectUtils.isEmpty(nickname) && !ObjectUtils.isEmpty(username) && !ObjectUtils.isEmpty(password)) {
+        if (!ObjectUtils.isEmpty(validTime) && !ObjectUtils.isEmpty(username) && !ObjectUtils.isEmpty(password)) {
             boolean existenceStatus = userService.usernameIsExistence(username);
             if (!existenceStatus) {
                 userService.addUserInfo(nickname, username, password, email, phone, validTime, remark);

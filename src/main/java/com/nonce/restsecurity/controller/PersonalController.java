@@ -71,4 +71,22 @@ public class PersonalController {
     public SecurityResponse personalPasswordUpdate(String username, String oldPassword, String newPassword) {
         return userService.personalPasswordUpdateByOldPasswordAndNewPassword(username, oldPassword, newPassword);
     }
+
+    /**
+     * 注册
+     */
+    @PostMapping(value = "/personalUserInfo/register")
+    public SecurityResponse personalUserInfo(String nickname, String username, String password, String email, String phone, String validTime, String remark) {
+        if (!ObjectUtils.isEmpty(validTime) && !ObjectUtils.isEmpty(username) && !ObjectUtils.isEmpty(password)) {
+            boolean existenceStatus = userService.usernameIsExistence(username);
+            if (!existenceStatus) {
+                userService.addUserInfo(nickname, username, password, email, phone, validTime, remark);
+                return new SecurityResponse(true, "1", "Add user success!!", "username: " + username + " add success!!");
+            } else {
+                return new SecurityResponse(false, "-1", "User already exists!!", "username: " + username + " already exists!!");
+            }
+        } else {
+            return new SecurityResponse(false, "-1", "Incomplete information!!", "Incomplete information!!");
+        }
+    }
 }
